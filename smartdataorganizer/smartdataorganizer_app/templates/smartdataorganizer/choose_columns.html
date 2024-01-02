@@ -1,0 +1,85 @@
+<!-- choose_columns.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Choose Columns</title>
+    <style>
+        /* Add some styling for the pop-up */
+        
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f1f1f1;
+            padding: 15px;
+            border: 1px solid #ddd;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Choose Columns</h2>
+
+    <!-- Add a div for the pop-up -->
+    <div id="messagePopup" class="popup"></div>
+
+    <!-- Include messages as data attributes for JavaScript -->
+    {% if messages %}
+    <div id="messages" data-messages="{% for message in messages %}{{ message|escapejs }}{% if not forloop.last %},{% endif %}{% endfor %}"></div>
+    {% endif %}
+
+    <!-- smartdataorganizer/choose_columns.html -->
+    <form id="downloadForm" method="post" action="{% url 'download_file' spreadsheet.id %}">
+        {% csrf_token %} {% for column in column_names %}
+        <label>
+            <input type="checkbox" name="selected_columns" value="{{ column }}"> {{ column }}
+        </label><br> {% endfor %}
+        <button id="downloadButton" type="submit">Download Selected Columns</button>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("Script loaded and executed!");
+
+            var popup = document.getElementById("messagePopup");
+            var downloadForm = document.getElementById("downloadForm");
+
+            downloadForm.addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent the form from submitting
+
+                // Hardcoded messages for testing
+                var messages = [{
+                    "message": "Test message 1",
+                    "tags": "info"
+                }, ];
+
+                messages.forEach(function(message) {
+                    popup.innerHTML += '<div class="' + message.tags + '">' + message.message + '</div>';
+                });
+
+                // Display the pop-up
+                popup.style.display = "block";
+
+                // Hide the pop-up after a few seconds (adjust the timeout as needed)
+                setTimeout(function() {
+                    popup.style.display = "none";
+
+                    // Submit the form programmatically after hiding the pop-up
+                    downloadForm.submit();
+                }, 3000); // 3000 milliseconds = 3 seconds
+            });
+        });
+    </script>
+
+
+
+
+
+</body>
+
+</html>

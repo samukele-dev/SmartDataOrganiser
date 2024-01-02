@@ -1,0 +1,36 @@
+<!-- organizer/templates/filter_and_download.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Include Bootstrap CSS here -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Filter and Download</title>
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h2>Filter and Download</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.name.label_tag }} {{ form.name }}
+            </div>
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+
+        {% if data %}
+        <div class="mt-3">
+            <p><a href="{% url 'download_filtered_data' %}" class="btn btn-success">Download Filtered Data</a></p>
+            <!-- Display filtered data if needed -->
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Include Bootstrap JS here if needed -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
